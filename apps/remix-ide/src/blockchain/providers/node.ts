@@ -8,19 +8,19 @@ export class NodeProvider {
   executionContext: ExecutionContext
   config: Config
 
-  constructor (executionContext: ExecutionContext, config: Config) {
+  constructor(executionContext: ExecutionContext, config: Config) {
     this.executionContext = executionContext
     this.config = config
   }
 
-  getAccounts (cb) {
+  getAccounts(cb) {
     if (this.config.get('settings/personal-mode')) {
       return this.executionContext.web3().eth.personal.getAccounts().then(res => cb(null, res)).catch(err => cb(err))
     }
     return this.executionContext.web3().eth.getAccounts().then(res => cb(null, res)).catch(err => cb(err))
   }
 
-  newAccount (passwordPromptCb, cb) {
+  newAccount(passwordPromptCb, cb) {
     if (!this.config.get('settings/personal-mode')) {
       return cb('Not running in personal mode')
     }
@@ -29,20 +29,20 @@ export class NodeProvider {
     })
   }
 
-  async resetEnvironment () {
+  async resetEnvironment() {
     /* Do nothing. */
   }
 
-  async getBalanceInEther (address) {
+  async getBalanceInEther(address) {
     const balance = await this.executionContext.web3().eth.getBalance(address)
-    return Web3.utils.fromWei(balance.toString(10), 'ether')
+    return Web3.utils.fromWei(balance.toString(10), 'ether').replace("ether", "sel")
   }
 
-  getGasPrice (cb) {
+  getGasPrice(cb) {
     this.executionContext.web3().eth.getGasPrice().then(res => cb(null, res)).catch(err => cb(err))
   }
 
-  signMessage (message, account, passphrase, cb) {
+  signMessage(message, account, passphrase, cb) {
     const messageHash = hashPersonalMessage(Buffer.from(message))
     try {
       const personal = new Personal(this.executionContext.web3().currentProvider)
@@ -55,7 +55,7 @@ export class NodeProvider {
     }
   }
 
-  getProvider () {
+  getProvider() {
     return this.executionContext.getProvider()
   }
 }

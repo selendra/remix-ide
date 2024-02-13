@@ -2,9 +2,9 @@ import path from "path";
 import { monacoTypes } from '@remix-ui/editor';
 
 type CodeParserImportsData = {
-    files?: string[],
-    modules?: string[],
-    packages?: string[],
+  files?: string[],
+  modules?: string[],
+  packages?: string[],
 }
 
 export function getStringCompletionItems(range: monacoTypes.IRange, monaco): monacoTypes.languages.CompletionItem[] {
@@ -513,7 +513,7 @@ export function GetCompletionKeywords(range: monacoTypes.IRange, monaco): monaco
 
 export function GeCompletionUnits(range: monacoTypes.IRange, monaco): monacoTypes.languages.CompletionItem[] {
   const completionItems = [];
-  const etherUnits = ['wei', 'gwei', 'finney', 'szabo', 'ether'];
+  const etherUnits = ['sel'];
   etherUnits.forEach(unit => {
     const completionItem = CreateCompletionItem(unit, monaco.languages.CompletionItemKind.Unit, unit + ': ether unit', range);
     completionItems.push(completionItem);
@@ -559,16 +559,16 @@ export function GetImports(range: monacoTypes.IRange
 
 
     list = [...list,
-      ...data.files
-        .filter((item) => item.startsWith(word))
-        .map((item) => {
-          return {
-            kind: monaco.languages.CompletionItemKind.File,
-            range: range,
-            label: `${item}`,
-            insertText: `${item.replace(word, '')}`,
-          }
-        })]
+    ...data.files
+      .filter((item) => item.startsWith(word))
+      .map((item) => {
+        return {
+          kind: monaco.languages.CompletionItemKind.File,
+          range: range,
+          label: `${item}`,
+          insertText: `${item.replace(word, '')}`,
+        }
+      })]
   }
   if (word === '@' || word === '') {
     list = [...list, ...data.packages.map((item) => {
@@ -738,7 +738,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'addmod(uint x, uint y, uint k) returns (uint):' +
-                'compute (x + y) % k where the addition is performed with arbitrary precision and does not wrap around at 2**256',
+        'compute (x + y) % k where the addition is performed with arbitrary precision and does not wrap around at 2**256',
       insertText: 'addmod(${1:x}, ${2:y}, ${3:k})',
       kind: monaco.languages.CompletionItemKind.Method,
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -747,7 +747,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'mulmod(uint x, uint y, uint k) returns (uint):' +
-                'compute (x * y) % k where the multiplication is performed with arbitrary precision and does not wrap around at 2**256',
+        'compute (x * y) % k where the multiplication is performed with arbitrary precision and does not wrap around at 2**256',
       insertText: 'mulmod(${1:x}, ${2:y}, ${3:k})',
       kind: monaco.languages.CompletionItemKind.Method,
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -756,7 +756,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'keccak256(...) returns (bytes32):' +
-                'compute the Ethereum-SHA-3 (Keccak-256) hash of the (tightly packed) arguments',
+        'compute the Ethereum-SHA-3 (Keccak-256) hash of the (tightly packed) arguments',
       insertText: 'keccak256(${1:x})',
       kind: monaco.languages.CompletionItemKind.Method,
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
@@ -765,7 +765,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'sha256(...) returns (bytes32):' +
-                'compute the SHA-256 hash of the (tightly packed) arguments',
+        'compute the SHA-256 hash of the (tightly packed) arguments',
       insertText: 'sha256(${1:x})',
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       kind: monaco.languages.CompletionItemKind.Method,
@@ -774,7 +774,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'sha3(...) returns (bytes32):' +
-                'alias to keccak256',
+        'alias to keccak256',
       insertText: 'sha3(${1:x})',
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       kind: monaco.languages.CompletionItemKind.Method,
@@ -783,7 +783,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'ripemd160(...) returns (bytes20):' +
-                'compute RIPEMD-160 hash of the (tightly packed) arguments',
+        'compute RIPEMD-160 hash of the (tightly packed) arguments',
       insertText: 'ripemd160(${1:x})',
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       kind: monaco.languages.CompletionItemKind.Method,
@@ -792,7 +792,7 @@ export function GetGlobalFunctions(range: monacoTypes.IRange, monaco): monacoTyp
     },
     {
       detail: 'ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address):' +
-                'recover the address associated with the public key from elliptic curve signature or return zero on error',
+        'recover the address associated with the public key from elliptic curve signature or return zero on error',
       insertText: 'ecrecover(${1:hash}, ${2:v}, ${3:r}, ${4:s})',
       insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       kind: monaco.languages.CompletionItemKind.Method,

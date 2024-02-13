@@ -1,18 +1,18 @@
 // eslint-disable-next-line no-use-before-define
-import React, {useEffect, useRef, useState} from 'react'
-import {FormattedMessage} from 'react-intl'
-import {BN} from 'bn.js'
-import {CustomTooltip, isNumeric} from '@remix-ui/helper'
-import {ValueProps} from '../types'
+import React, { useEffect, useRef, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { BN } from 'bn.js'
+import { CustomTooltip, isNumeric } from '@remix-ui/helper'
+import { ValueProps } from '../types'
 
 export function ValueUI(props: ValueProps) {
-  const inputValue = useRef<HTMLInputElement>({} as HTMLInputElement)  
+  const inputValue = useRef<HTMLInputElement>({} as HTMLInputElement)
 
   useEffect(() => {
     if (props.sendValue !== inputValue.current.value) {
       inputValue.current.value = props.sendValue
     }
-  },[props.sendValue])
+  }, [props.sendValue])
 
   const validateValue = (e) => {
     const value = e.target.value
@@ -71,20 +71,11 @@ export function ValueUI(props: ValueProps) {
           className="form-control p-1 udapp_gasNvalUnit udapp_col2_2 custom-select"
           id="unit"
           onChange={(e) => {
-            props.setUnit(e.target.value as 'ether' | 'finney' | 'gwei' | 'wei')
+            props.setUnit('sel')
           }}
         >
-          <option data-unit="wei" value="wei">
-            Wei
-          </option>
-          <option data-unit="gwei" value="gwei">
-            Gwei
-          </option>
-          <option data-unit="finney" value="finney">
-            Finney
-          </option>
-          <option data-unit="ether" value="ether">
-            Ether
+          <option data-unit="sel" value="sel">
+            Sel
           </option>
         </select>
       </div>

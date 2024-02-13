@@ -1,20 +1,21 @@
+
 import * as packageJson from '../../../../../package.json'
 import React from 'react' // eslint-disable-line
-import {FormattedMessage} from 'react-intl'
-import {AbstractProvider} from './abstract-provider'
+import { FormattedMessage } from 'react-intl'
+import { AbstractProvider } from './abstract-provider'
 
 const profile = {
   name: 'foundry-provider',
-  displayName: 'Foundry Provider',
-  kind: 'provider',
-  description: 'Foundry Anvil provider',
+  displayName: 'Selendra Provider',
+  kind: 'selendra',
+  description: 'Selendra provider',
   methods: ['sendAsync', 'init'],
   version: packageJson.version
 }
 
 export class FoundryProvider extends AbstractProvider {
   constructor(blockchain) {
-    super(profile, blockchain, 'http://127.0.0.1:8545')
+    super(profile, blockchain, 'https://rpc0.selendra.org')
   }
 
   body(): JSX.Element {

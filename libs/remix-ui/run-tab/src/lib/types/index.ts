@@ -28,7 +28,7 @@ export interface RunTabState {
     selectedAccount: string
   },
   sendValue: string,
-  sendUnit: 'ether' | 'finney' | 'gwei' | 'wei',
+  sendUnit: 'sel',
   gasLimit: number,
   selectExEnv: string,
   personalMode: boolean,
@@ -117,7 +117,7 @@ export interface SettingsProps {
     error: string
   },
   setAccount: (account: string) => void,
-  setUnit: (unit: 'ether' | 'finney' | 'gwei' | 'wei') => void,
+  setUnit: (unit: 'sel') => void,
   sendValue: string,
   sendUnit: string,
   gasLimit: number,
@@ -196,7 +196,7 @@ export interface GasPriceProps {
 }
 
 export interface ValueProps {
-  setUnit: (unit: 'ether' | 'finney' | 'gwei' | 'wei') => void,
+  setUnit: (unit: 'sel') => void,
   setSendValue: (value: string) => void,
   sendValue: string,
   sendUnit: string
@@ -218,11 +218,11 @@ export interface Network {
 
 export type MainnetPrompt = (
   tx: Tx, network:
-  Network, amount: string,
+    Network, amount: string,
   gasEstimation: string,
   gasFees: (maxFee: string, cb: (txFeeText: string, priceStatus: boolean) => void) => void,
   determineGasPrice: (cb: (txFeeText: string, gasPriceValue: string, gasPriceStatus: boolean) => void) => void
-  ) => JSX.Element
+) => JSX.Element
 
 export interface ContractDropdownProps {
   selectedAccount: string,
@@ -249,7 +249,7 @@ export interface ContractDropdownProps {
     gasEstimationPrompt: (msg: string) => JSX.Element,
     passphrasePrompt: (msg: string) => JSX.Element,
     publishToStorage: (storage: 'ipfs' | 'swarm',
-    contract: ContractData) => void,
+      contract: ContractData) => void,
     mainnetPrompt: MainnetPrompt,
     isOverSizePrompt: (values: OverSizeLimit) => JSX.Element,
     args,
@@ -306,7 +306,7 @@ export interface InstanceContainerProps {
     contractName: string,
     contractABI, contract,
     address,
-    logMsg:string,
+    logMsg: string,
     mainnetPrompt: MainnetPrompt,
     gasEstimationPrompt: (msg: string) => JSX.Element,
     passphrasePrompt: (msg: string) => JSX.Element,
@@ -411,7 +411,7 @@ export interface UdappProps {
     contractName: string,
     contractABI, contract,
     address,
-    logMsg:string,
+    logMsg: string,
     mainnetPrompt: MainnetPrompt,
     gasEstimationPrompt: (msg: string) => JSX.Element,
     passphrasePrompt: (msg: string) => JSX.Element,

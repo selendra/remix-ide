@@ -5,11 +5,11 @@ import { ExecutionContext } from '../execution-context'
 export class InjectedProvider {
   executionContext: ExecutionContext
 
-  constructor (executionContext) {
+  constructor(executionContext) {
     this.executionContext = executionContext
   }
 
-  getAccounts (cb) {
+  getAccounts(cb) {
     return this.executionContext.web3().eth.getAccounts()
       .then(accounts => cb(null, accounts))
       .catch(err => {
@@ -17,26 +17,26 @@ export class InjectedProvider {
       })
   }
 
-  newAccount (passwordPromptCb, cb) {
+  newAccount(passwordPromptCb, cb) {
     passwordPromptCb((passphrase) => {
       this.executionContext.web3().eth.personal.newAccount(passphrase).then((result) => cb(null, result)).catch(error => cb(error))
     })
   }
 
-  async resetEnvironment () {
+  async resetEnvironment() {
     /* Do nothing. */
   }
 
-  async getBalanceInEther (address) {
+  async getBalanceInEther(address) {
     const balance = await this.executionContext.web3().eth.getBalance(address)
-    return Web3.utils.fromWei(balance.toString(10), 'ether')
+    return Web3.utils.fromWei(balance.toString(10), 'ether').replace("ether", "sel")
   }
 
-  getGasPrice (cb) {
+  getGasPrice(cb) {
     this.executionContext.web3().eth.getGasPrice().then((result => cb(null, result)))
   }
 
-  signMessage (message, account, _passphrase, cb) {
+  signMessage(message, account, _passphrase, cb) {
     const messageHash = hashPersonalMessage(Buffer.from(message))
     try {
       message = isHexString(message) ? message : Web3.utils.utf8ToHex(message)
@@ -48,7 +48,7 @@ export class InjectedProvider {
     }
   }
 
-  getProvider () {
+  getProvider() {
     return 'injected'
   }
 }

@@ -147,11 +147,11 @@ export const EditorUI = (props: EditorUIProps) => {
   const intl = useIntl()
   const [, setCurrentBreakpoints] = useState({})
   const defaultEditorValue = `
-  \t\t\t\t\t\t\t ____    _____   __  __   ___  __  __   ___   ____    _____ 
-  \t\t\t\t\t\t\t|  _ \\  | ____| |  \\/  | |_ _| \\ \\/ /  |_ _| |  _ \\  | ____|
-  \t\t\t\t\t\t\t| |_) | |  _|   | |\\/| |  | |   \\  /    | |  | | | | |  _|  
-  \t\t\t\t\t\t\t|  _ <  | |___  | |  | |  | |   /  \\    | |  | |_| | | |___ 
-  \t\t\t\t\t\t\t|_| \\_\\ |_____| |_|  |_| |___| /_/\\_\\  |___| |____/  |_____|\n\n
+  \t\t\t\t\t\t\t    o O O    _ _    ___    _ __     (_)    __ __
+  \t\t\t\t\t\t\t   o        | \'_|  / -_)  | \'  \\    | |    \\ / /
+  \t\t\t\t\t\t\t  TS__[O]  _|_|_   \\___|  |_|_|_|  _|_|_   /_\\_\\
+  \t\t\t\t\t\t\t {======|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|_|\"\"\"\"\"|
+  \t\t\t\t\t\t\t ./o--000\'\"\`-0-0-\'\"\`-0-0-'"\`-0-0-\'\"\`-0-0-\'\"\`-0-0-\'
   \t\t\t\t\t\t\t${intl.formatMessage({id: 'editor.keyboardShortcuts'})}:\n
   \t\t\t\t\t\t\t\tCTRL + S: ${intl.formatMessage({id: 'editor.keyboardShortcuts.text1'})}\n
   \t\t\t\t\t\t\t\tCTRL + Shift + F : ${intl.formatMessage({id: 'editor.keyboardShortcuts.text2'})}\n
@@ -162,10 +162,7 @@ export const EditorUI = (props: EditorUIProps) => {
   \t\t\t\t\t\t\t${intl.formatMessage({id: 'editor.importantLinks'})}:\n
   \t\t\t\t\t\t\t\t${intl.formatMessage({id: 'editor.importantLinks.text1'})}: https://remix-project.org/\n
   \t\t\t\t\t\t\t\t${intl.formatMessage({id: 'editor.importantLinks.text2'})}: https://remix-ide.readthedocs.io/en/latest/\n
-  \t\t\t\t\t\t\t\tGithub: https://github.com/ethereum/remix-project\n
-  \t\t\t\t\t\t\t\tGitter: https://gitter.im/ethereum/remix\n
-  \t\t\t\t\t\t\t\tMedium: https://medium.com/remix-ide\n
-  \t\t\t\t\t\t\t\tTwitter: https://twitter.com/ethereumremix\n
+  \t\t\t\t\t\t\t\tGithub: https://github.com/selendra/remix-ide\n
   `
   const pasteCodeRef = useRef(false)
   const editorRef = useRef(null)

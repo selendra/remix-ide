@@ -30,7 +30,7 @@ const loadContractFromAddress = (plugin: RunTab, address, confirmCb, cb) => {
       } catch (e) {
         return cb('Failed to parse the current file as JSON ABI.')
       }
-      _paq.push(['trackEvent', 'udapp', 'useAtAddress' , 'AtAddressLoadWithABI'])
+      _paq.push(['trackEvent', 'udapp', 'useAtAddress', 'AtAddressLoadWithABI'])
       cb(null, 'abi', abi)
     })
   } else {
@@ -94,7 +94,7 @@ export const confirmationHandler = (plugin: RunTab, dispatch: React.Dispatch<any
   if (network.name !== 'Main') {
     return continueTxExecution(null)
   }
-  const amount = plugin.blockchain.fromWei(tx.value, true, 'ether')
+  const amount = plugin.blockchain.fromWei(tx.value, true, 'ether').replace("ether", "sel")
   const content = confirmDialogContent(tx, network, amount, gasEstimation, plugin.blockchain.determineGasFees(tx), plugin.blockchain.determineGasPrice.bind(plugin.blockchain))
 
   dispatch(displayNotification('Confirm transaction', content, 'Confirm', 'Cancel', () => {
@@ -120,9 +120,9 @@ const getConfirmationCb = (plugin: RunTab, dispatch: React.Dispatch<any>, confir
 export const continueHandler = (dispatch: React.Dispatch<any>, gasEstimationPrompt: (msg: string) => JSX.Element, error, continueTxExecution, cancelCb) => {
   if (error) {
     let msg = typeof error !== 'string' ? error.message : error
-    
+
     if (msg.includes('invalid opcode')) msg += '\n OR the EVM version used by the selected environment is not compatible with the compiler EVM version.'
-    
+
     dispatch(displayNotification('Gas estimation failed', gasEstimationPrompt(msg), 'Send Transaction', 'Cancel Transaction', () => {
       continueTxExecution()
     }, () => {
@@ -144,7 +144,7 @@ export const createInstance = async (
   gasEstimationPrompt: (msg: string) => JSX.Element,
   passphrasePrompt: (msg: string) => JSX.Element,
   publishToStorage: (storage: 'ipfs' | 'swarm',
-  contract: ContractData) => void,
+    contract: ContractData) => void,
   mainnetPrompt: MainnetPrompt,
   isOverSizePrompt: (values: OverSizeLimit) => JSX.Element,
   args,
@@ -272,7 +272,7 @@ export const syncContractsInternal = async (plugin: RunTab) => {
   }
   if (await plugin.call('manager', 'isActive', 'hardhat')) {
     plugin.call('hardhat', 'sync')
-  } 
+  }
   if (await plugin.call('manager', 'isActive', 'foundry')) {
     plugin.call('foundry', 'sync')
   }
@@ -288,7 +288,7 @@ export const runTransactions = (
   contractName: string,
   contractABI, contract,
   address,
-  logMsg:string,
+  logMsg: string,
   mainnetPrompt: MainnetPrompt,
   gasEstimationPrompt: (msg: string) => JSX.Element,
   passphrasePrompt: (msg: string) => JSX.Element,
@@ -344,7 +344,7 @@ export const updateInstanceBalance = async (plugin: RunTab, dispatch: React.Disp
       instance.balance = balInEth
     }
     dispatch(updateInstanceBalance(instances, dispatch))
-  } 
+  }
 }
 
 export const isValidContractAddress = async (plugin: RunTab, address: string) => {
@@ -394,7 +394,7 @@ export const isValidContractUpgrade = async (plugin: RunTab, proxyAddress: strin
 
     if (parsedNetworkFile.deployments[proxyAddress] && parsedNetworkFile.deployments[proxyAddress].implementationAddress) {
       const solcBuildExists = await plugin.call('fileManager', 'exists', `.deploys/upgradeable-contracts/${identifier}/solc-${parsedNetworkFile.deployments[proxyAddress].implementationAddress}.json`)
-        
+
       if (solcBuildExists) {
         const solcFile: string = await plugin.call('fileManager', 'readFile', `.deploys/upgradeable-contracts/${identifier}/solc-${parsedNetworkFile.deployments[proxyAddress].implementationAddress}.json`)
         const parsedSolcFile: SolcBuildFile = JSON.parse(solcFile)

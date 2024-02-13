@@ -11,9 +11,9 @@ export class VMProvider {
   provider: {
     sendAsync: (query: JSONRPCRequestPayload, callback: JSONRPCResponseCallback) => void
   }
-  newAccountCallback: {[stamp: number]: (error: Error, address: string) => void}
+  newAccountCallback: { [stamp: number]: (error: Error, address: string) => void }
 
-  constructor (executionContext: ExecutionContext) {
+  constructor(executionContext: ExecutionContext) {
 
     this.executionContext = executionContext
     this.worker = null
@@ -21,7 +21,7 @@ export class VMProvider {
     this.newAccountCallback = {}
   }
 
-  getAccounts (cb) {
+  getAccounts(cb) {
     this.web3.eth.getAccounts()
       .then(accounts => cb(null, accounts))
       .catch(err => {
@@ -29,7 +29,7 @@ export class VMProvider {
       })
   }
 
-  async resetEnvironment () {
+  async resetEnvironment() {
     if (this.worker) this.worker.terminate()
     this.worker = new Worker(new URL('./worker-vm', import.meta.url))
     const provider = this.executionContext.getProviderObject()
@@ -48,7 +48,7 @@ export class VMProvider {
             stamps[msg.data.stamp].reject(msg.data.error)
           } else {
             stamps[msg.data.stamp].resolve(msg.data.result)
-          }          
+          }
         } else if (msg.data.cmd === 'initiateResult') {
           if (!msg.data.error) {
             this.provider = {
@@ -57,7 +57,7 @@ export class VMProvider {
                   const stamp = Date.now() + incr
                   incr++
                   stamps[stamp] = { callback, resolve, reject }
-                  this.worker.postMessage({ cmd: 'sendAsync', query, stamp })              
+                  this.worker.postMessage({ cmd: 'sendAsync', query, stamp })
                 })
               }
             }
@@ -76,35 +76,35 @@ export class VMProvider {
           }
         }
       })
-      this.worker.postMessage({ cmd: 'init', fork: this.executionContext.getCurrentFork(), nodeUrl: provider?.options['nodeUrl'], blockNumber: provider?.options['blockNumber']})
+      this.worker.postMessage({ cmd: 'init', fork: this.executionContext.getCurrentFork(), nodeUrl: provider?.options['nodeUrl'], blockNumber: provider?.options['blockNumber'] })
     })
   }
 
   // TODO: is still here because of the plugin API
   // can be removed later when we update the API
-  createVMAccount (newAccount) {
+  createVMAccount(newAccount) {
     const { privateKey, balance } = newAccount
     this.worker.postMessage({ cmd: 'addAccount', privateKey: privateKey, balance })
     const privKey = Buffer.from(privateKey, 'hex')
     return '0x' + privateToAddress(privKey).toString('hex')
   }
 
-  newAccount (_passwordPromptCb, cb) {
+  newAccount(_passwordPromptCb, cb) {
     const stamp = Date.now()
     this.newAccountCallback[stamp] = cb
     this.worker.postMessage({ cmd: 'newAccount', stamp })
   }
 
-  async getBalanceInEther (address) {
+  async getBalanceInEther(address) {
     const balance = await this.web3.eth.getBalance(address, undefined, { number: FMT_NUMBER.HEX, bytes: FMT_BYTES.HEX })
-    return fromWei(toBigInt(balance).toString(10), 'ether')
+    return fromWei(toBigInt(balance).toString(10), 'ether').replace("ether", "sel")
   }
 
-  getGasPrice (cb) {
+  getGasPrice(cb) {
     this.web3.eth.getGasPrice().then((result => cb(null, result))).catch((error) => cb(error))
   }
 
-  signMessage (message, account, _passphrase, cb) {
+  signMessage(message, account, _passphrase, cb) {
     const messageHash = hashPersonalMessage(Buffer.from(message))
     message = isHexString(message) ? message : Web3.utils.utf8ToHex(message)
     this.web3.eth.sign(message, account)
@@ -112,7 +112,7 @@ export class VMProvider {
       .catch(error => cb(error))
   }
 
-  getProvider () {
+  getProvider() {
     return this.executionContext.getProvider()
   }
 }
