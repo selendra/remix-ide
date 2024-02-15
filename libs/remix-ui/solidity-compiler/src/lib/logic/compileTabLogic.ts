@@ -1,5 +1,5 @@
 import { ICompilerApi } from '@remix-project/remix-lib'
-import { getValidLanguage, Compiler} from '@remix-project/remix-solidity'
+import { getValidLanguage, Compiler } from '@remix-project/remix-solidity'
 import { EventEmitter } from 'events'
 
 declare global {
@@ -11,7 +11,7 @@ const _paq = window._paq = window._paq || []  //eslint-disable-line
 
 export class CompileTabLogic {
   public compiler
-  public api:  ICompilerApi
+  public api: ICompilerApi
   public contentImport
   public optimize
   public runs
@@ -23,7 +23,7 @@ export class CompileTabLogic {
   public useFileConfiguration: boolean
   public configFilePath: string
 
-  constructor (api: ICompilerApi, contentImport) {
+  constructor(api: ICompilerApi, contentImport) {
     this.api = api
     this.contentImport = contentImport
     this.event = new EventEmitter()
@@ -31,7 +31,7 @@ export class CompileTabLogic {
     this.evmVersions = ['default', 'cancun', 'shanghai', 'paris', 'london', 'berlin', 'istanbul', 'petersburg', 'constantinople', 'byzantium', 'spuriousDragon', 'tangerineWhistle', 'homestead']
   }
 
-  init () {
+  init() {
     this.optimize = this.api.getCompilerQueryParameters().optimize
     this.api.setCompilerQueryParameters({ optimize: this.optimize })
     this.compiler.set('optimize', this.optimize)
@@ -43,9 +43,9 @@ export class CompileTabLogic {
 
     this.evmVersion = this.api.getCompilerQueryParameters().evmVersion
     if (
-      this.evmVersion === 'undefined' || 
-      this.evmVersion === 'null' || 
-      !this.evmVersion || 
+      this.evmVersion === 'undefined' ||
+      this.evmVersion === 'null' ||
+      !this.evmVersion ||
       !this.evmVersions.includes(this.evmVersion)) {
       this.evmVersion = null
     }
@@ -58,34 +58,34 @@ export class CompileTabLogic {
     }
   }
 
-  setOptimize (newOptimizeValue: boolean) {
+  setOptimize(newOptimizeValue: boolean) {
     this.optimize = newOptimizeValue
     this.api.setCompilerQueryParameters({ optimize: this.optimize })
     this.compiler.set('optimize', this.optimize)
   }
 
-  setUseFileConfiguration (useFileConfiguration: boolean) {
+  setUseFileConfiguration(useFileConfiguration: boolean) {
     this.useFileConfiguration = useFileConfiguration
     this.compiler.set('useFileConfiguration', useFileConfiguration)
   }
 
-  setConfigFilePath (path) {
+  setConfigFilePath(path) {
     this.configFilePath = path
   }
 
-  setRuns (runs) {
+  setRuns(runs) {
     this.runs = runs
     this.api.setCompilerQueryParameters({ runs: this.runs })
     this.compiler.set('runs', this.runs)
   }
 
-  setEvmVersion (newEvmVersion) {
+  setEvmVersion(newEvmVersion) {
     this.evmVersion = newEvmVersion
     this.api.setCompilerQueryParameters({ evmVersion: this.evmVersion })
     this.compiler.set('evmVersion', this.evmVersion)
   }
 
-  getCompilerState () {
+  getCompilerState() {
     return this.compiler.state
   }
 
@@ -93,7 +93,7 @@ export class CompileTabLogic {
    * Set the compiler to using Solidity or Yul (default to Solidity)
    * @params lang {'Solidity' | 'Yul'} ...
    */
-  setLanguage (lang) {
+  setLanguage(lang) {
     this.language = lang
     this.api.setCompilerQueryParameters({ language: lang })
     this.compiler.set('language', lang)
@@ -103,20 +103,20 @@ export class CompileTabLogic {
    * Compile a specific file of the file manager
    * @param {string} target the path to the file to compile
    */
-  compileFile (target) {
+  compileFile(target) {
     if (!target) throw new Error('No target provided for compiliation')
     return new Promise((resolve, reject) => {
-      this.api.readFile(target).then(async(content) => {
+      this.api.readFile(target).then(async (content) => {
         const sources = { [target]: { content } }
         this.event.emit('removeAnnotations')
         this.event.emit('startingCompilation')
-        if(await this.api.fileExists('remappings.txt')) {
+        if (await this.api.fileExists('remappings.txt')) {
           this.api.readFile('remappings.txt').then(remappings => {
             this.compiler.set('remappings', remappings.split('\n').filter(Boolean))
           })
         } else this.compiler.set('remappings', [])
         if (this.configFilePath) {
-          this.api.readFile(this.configFilePath).then( contentConfig => {
+          this.api.readFile(this.configFilePath).then(contentConfig => {
             this.compiler.set('configFileContent', contentConfig)
           })
         }
@@ -128,25 +128,25 @@ export class CompileTabLogic {
     })
   }
 
-  async isHardhatProject () {
+  async isHardhatProject() {
     if (this.api.getFileManagerMode() === 'localhost') {
       return await this.api.fileExists('hardhat.config.js') || await this.api.fileExists('hardhat.config.ts')
     } else return false
   }
 
-  async isTruffleProject () {
+  async isTruffleProject() {
     if (this.api.getFileManagerMode() === 'localhost') {
       return await this.api.fileExists('truffle-config.js')
     } else return false
   }
 
-  async isFoundryProject () {
+  async isFoundryProject() {
     if (this.api.getFileManagerMode() === 'localhost') {
       return await this.api.fileExists('foundry.toml')
     } else return false
   }
 
-  runCompiler (externalCompType) {
+  runCompiler(externalCompType) {
     try {
       if (this.api.getFileManagerMode() === 'localhost') {
         if (externalCompType === 'hardhat') {

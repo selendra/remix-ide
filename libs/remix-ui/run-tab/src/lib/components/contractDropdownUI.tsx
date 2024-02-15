@@ -193,7 +193,7 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
 
   const createInstance = (selectedContract, args, deployMode?: DeployMode[]) => {
     if (selectedContract.bytecodeObject.length === 0) {
-      return props.modal(intl.formatMessage({ id: 'udapp.alert' }), intl.formatMessage({ id: 'udapp.thisContractMayBeAbstract' }), intl.formatMessage({ id: 'udapp.ok' }), () => {})
+      return props.modal(intl.formatMessage({ id: 'udapp.alert' }), intl.formatMessage({ id: 'udapp.thisContractMayBeAbstract' }), intl.formatMessage({ id: 'udapp.ok' }), () => { })
     }
     if (selectedContract.name !== currentContract && selectedContract.name === 'ERC1967Proxy') selectedContract.name = currentContract
     const isProxyDeployment = (deployMode || []).find((mode) => mode === 'Deploy with Proxy')
@@ -217,7 +217,7 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
           )
         },
         intl.formatMessage({ id: 'udapp.cancel' }),
-        () => {}
+        () => { }
       )
     } else if (isContractUpgrade) {
       props.modal(
@@ -237,7 +237,7 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
           )
         },
         intl.formatMessage({ id: 'udapp.cancel' }),
-        () => {}
+        () => { }
       )
     } else {
       props.createInstance(loadedContractData, props.gasEstimationPrompt, props.passphrasePrompt, props.publishToStorage, props.mainnetPrompt, isOverSizePrompt, args, deployMode)
@@ -369,11 +369,6 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
   }
 
   let evmVersion = null
-  try {
-    if (loadedContractData && loadedContractData.metadata) {
-      evmVersion = JSON.parse(loadedContractData.metadata).settings.evmVersion
-    }
-  } catch (err) {}
   return (
     <div className="udapp_container mb-2" data-id="contractDropdownContainer">
       <div className="d-flex justify-content-between">
@@ -398,7 +393,7 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
             tooltipClasses="text-wrap text-left"
             tooltipId="info-sync-compiled-contract"
             tooltipText={
-              <span className="text-left">
+              < span className="text-left">
                 <FormattedMessage id="udapp.infoSyncCompiledContractTooltip" values={{ br: <br /> }} />
               </span>
             }
@@ -413,8 +408,9 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
               <i style={{ cursor: 'pointer' }} className="fa fa-refresh mr-2 mt-2" aria-hidden="true"></i>
             </button>
           </CustomTooltip>
-        ) : null}
-      </div>
+        ) : null
+        }
+      </div >
       <div className="udapp_subcontainer">
         <CustomTooltip placement={'right'} tooltipClasses="text-nowrap text-left" tooltipId="remixUdappContractNamesTooltip" tooltipText={contractOptions.title}>
           <select
@@ -445,22 +441,7 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
           {abiLabel.content}
         </span>
       </div>
-      {evmVersion && loadedContractData && (
-        <CustomTooltip
-          placement={'right'}
-          tooltipClasses="text-wrap text-left"
-          tooltipId="info-evm-version-warn"
-          tooltipText={
-            <span className="text-left">
-              <FormattedMessage id="udapp.warningEvmVersion" values={{ evmVersion }} />
-            </span>
-          }
-        >
-          <span className="udapp_evmVersion badge alert-warning">
-            <FormattedMessage id="udapp.evmVersion" />: {evmVersion}
-          </span>
-        </CustomTooltip>
-      )}
+
       <div>
         <div className="udapp_deployDropdown">
           {((contractList[currentFile] && contractList[currentFile].filter((contract) => contract)) || []).length > 0 && loadedContractData && (
@@ -516,7 +497,7 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
             <CustomTooltip placement={'top-end'} tooltipClasses="text-wrap text-left" tooltipId="runAndDeployAddresstooltip" tooltipText={atAddressOptions.title}>
               <div id="runAndDeployAtAdressButtonContainer" data-title={atAddressOptions.title}>
                 <button
-                  className={atAddressOptions.disabled ? "disabled udapp_atAddress btn btn-sm py-2 btn-primary"  : "udapp_atAddress btn btn-sm py-2 btn-primary"}
+                  className={atAddressOptions.disabled ? "disabled udapp_atAddress btn btn-sm py-2 btn-primary" : "udapp_atAddress btn btn-sm py-2 btn-primary"}
                   id="runAndDeployAtAdressButton"
                   disabled={atAddressOptions.disabled}
                   style={{ border: 'none' }}
@@ -550,6 +531,6 @@ export function ContractDropdownUI(props: ContractDropdownProps) {
           )}
         </div>
       </div>
-    </div>
+    </div >
   )
 }

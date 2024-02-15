@@ -212,7 +212,7 @@ export function AccountUI(props: AccountProps) {
         >
           {accounts.map((value, index) => (
             <option value={value} key={index}>
-              {loadedAccounts[value].replace("ether", "sel")}
+              {loadedAccounts[value].replace("ether", "SEL")}
             </option>
           ))}
         </select>

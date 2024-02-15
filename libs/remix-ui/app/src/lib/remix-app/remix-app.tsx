@@ -3,7 +3,6 @@ import './style/remix-app.css'
 import { RemixUIMainPanel } from '@remix-ui/panel'
 import MatomoDialog from './components/modals/matomo'
 import EnterDialog from './components/modals/enter'
-import OriginWarning from './components/modals/origin-warning'
 import DragBar from './components/dragbar/dragbar'
 import { AppProvider } from './context/provider'
 import AppDialogs from './components/modals/dialogs'
@@ -114,32 +113,32 @@ const RemixApp = (props: IRemixAppUi) => {
 
     // Use the type to setup the UI accordingly
     switch (type) {
-    case UsageTypes.Beginner: {
-      await props.app.appManager.call('manager', 'activatePlugin', 'LearnEth')
-      await props.app.appManager.call('walkthrough', 'start')
-      // const wName = 'Playground'
-      // const workspaces = await props.app.appManager.call('filePanel', 'getWorkspaces')
-      // if (!workspaces.find((workspace) => workspace.name === wName)) {
-      //   await props.app.appManager.call('filePanel', 'createWorkspace', wName, 'playground')
-      // }
-      // await props.app.appManager.call('filePanel', 'switchToWorkspace', { name: wName, isLocalHost: false })
+      case UsageTypes.Beginner: {
+        await props.app.appManager.call('manager', 'activatePlugin', 'LearnEth')
+        await props.app.appManager.call('walkthrough', 'start')
+        // const wName = 'Playground'
+        // const workspaces = await props.app.appManager.call('filePanel', 'getWorkspaces')
+        // if (!workspaces.find((workspace) => workspace.name === wName)) {
+        //   await props.app.appManager.call('filePanel', 'createWorkspace', wName, 'playground')
+        // }
+        // await props.app.appManager.call('filePanel', 'switchToWorkspace', { name: wName, isLocalHost: false })
 
-      _paq.push(['trackEvent', 'enterDialog', 'usageType', 'beginner'])
-      break
-    }
-    case UsageTypes.Advance: {
-      _paq.push(['trackEvent', 'enterDialog', 'usageType', 'advanced'])
-      break
-    }
-    case UsageTypes.Prototyper: {
-      _paq.push(['trackEvent', 'enterDialog', 'usageType', 'prototyper'])
-      break
-    }
-    case UsageTypes.Production: {
-      _paq.push(['trackEvent', 'enterDialog', 'usageType', 'production'])
-      break
-    }
-    default: throw new Error()
+        _paq.push(['trackEvent', 'enterDialog', 'usageType', 'beginner'])
+        break
+      }
+      case UsageTypes.Advance: {
+        _paq.push(['trackEvent', 'enterDialog', 'usageType', 'advanced'])
+        break
+      }
+      case UsageTypes.Prototyper: {
+        _paq.push(['trackEvent', 'enterDialog', 'usageType', 'prototyper'])
+        break
+      }
+      case UsageTypes.Production: {
+        _paq.push(['trackEvent', 'enterDialog', 'usageType', 'production'])
+        break
+      }
+      default: throw new Error()
     }
 
   }
@@ -150,7 +149,6 @@ const RemixApp = (props: IRemixAppUi) => {
       <platformContext.Provider value={props.app.platform}>
         <onLineContext.Provider value={online}>
           <AppProvider value={value}>
-            <OriginWarning></OriginWarning>
             <MatomoDialog hide={!appReady} okFn={() => setShowEnterDialog(true)}></MatomoDialog>
             {showEnterDialog && <EnterDialog handleUserChoice={(type) => handleUserChosenType(type)}></EnterDialog>}
             <div className={`remixIDE ${appReady ? '' : 'd-none'}`} data-id="remixIDE">

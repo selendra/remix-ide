@@ -28,7 +28,7 @@ export interface RunTabState {
     selectedAccount: string
   },
   sendValue: string,
-  sendUnit: 'sel',
+  sendUnit: 'ether',
   gasLimit: number,
   selectExEnv: string,
   personalMode: boolean,

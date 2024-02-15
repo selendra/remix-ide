@@ -147,11 +147,11 @@ export class RunTab extends ViewPlugin {
     if (window && window.ethereum && !(window.ethereum.isTrustWallet || window.ethereum.selectedProvider?.isTrustWallet)) {
       const displayNameInjected = `${window && window.ethereum && !(window.ethereum.providers && !window.ethereum.selectedProvider)
         ? window.ethereum.isCoinbaseWallet || window.ethereum.selectedProvider?.isCoinbaseWallet
-          ? 'Selendra'
+          ? 'Selendra - CoinBase'
           : window.ethereum.isBraveWallet || window.ethereum.selectedProvider?.isBraveWallet
-            ? 'Selendra'
+            ? 'Selendra - Brave'
             : window.ethereum.isMetaMask || window.ethereum.selectedProvider?.isMetaMask
-              ? 'Selendra'
+              ? 'Selendra - Metamask'
               : ''
         : ''
         }`
